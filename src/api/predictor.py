@@ -16,6 +16,7 @@ origins = [
     os.getenv("FRONTEND_CORS"),
     os.getenv("BACKEND_CORS"),
     os.getenv("LOCALHOST_CORS"),
+    os.getenv("UNIVERSAL_CORS")
 ]
 
 app.add_middleware(
