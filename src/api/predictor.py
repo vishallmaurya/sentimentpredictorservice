@@ -74,7 +74,7 @@ from sentence_transformers import SentenceTransformer
 from src.utils.text_preprocessing import cleaning_tweets
 
 clf = None
-vectorizer = None 
+vectorizer = None
 
 
 @asynccontextmanager
@@ -86,7 +86,7 @@ async def lifespan(app: FastAPI):
         vectorizer = SentenceTransformer("all-MiniLM-L6-v2")
     except Exception as e:
         raise SystemExit(1)
-    
+
     yield
 
     clf = None
@@ -123,6 +123,8 @@ async def predict_sentiment(tweet_input: TweetInput):
         if not all([clf, vectorizer]):
             raise HTTPException(503, "Service initializing")
 
+
+        print("This is a request: ", tweet_input.tweet)
         tweet = tweet_input.tweet
         clean_text, extracted_emojis = cleaning_tweets(tweet)
 
