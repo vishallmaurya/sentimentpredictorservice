@@ -17,17 +17,22 @@ model_path = os.path.join(os.path.dirname(__file__), "../model.pkl")
 incremental_clf = pickle.load(open(model_path, "rb"))
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-data = pd.read_csv("/content/synthetic_sentiment_data.csv")
+data = pd.read_csv("/content/output.csv")
 
 data.head(1)
+data.drop(['createdAt', 'updatedAt'], inplace=True, axis=1)
 
-data.drop(['Unnamed: 0', 'Date', 'class'], inplace=True, axis=1)
+len(data[data['tweet'].duplicated()])
+data.dropna(inplace=True)
+data.drop_duplicates(subset='tweet', inplace=True)
+len(data[data['tweet'].duplicated()])
+
 
 cleaned_tweets = []
 emoji_list = []
 
 for i in range(data.shape[0]):
-  clean_text, extracted_emojis = cleaning_tweets(str(data.iloc[i]["Tweet"]))
+  clean_text, extracted_emojis = cleaning_tweets(str(data.iloc[i]["tweet"]))
   cleaned_tweets.append(clean_text)
   emoji_list.append(extracted_emojis)
 
@@ -48,7 +53,7 @@ emoji_embeddings = [
 
 X_new = np.hstack((text_embeddings, np.array(emoji_embeddings)))
 
-y_new = data["gpt_label"].values
+y_new = data["predicted_class"].values
 
 class_weights = compute_class_weight("balanced", classes=np.unique(y_new), y=y_new)
 class_weight_dict = {i: class_weights[i] for i in range(len(class_weights))}

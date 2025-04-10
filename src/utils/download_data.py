@@ -14,4 +14,4 @@ collection = db["datas"]
 data = list(collection.find({}))
 df = pd.DataFrame(data)
 df.drop(columns=['_id', 'user_id', '__v'], inplace=True)
-df.to_csv('output.csv', index=False, encoding='utf-8')
+df.to_csv('../output.csv', index=False, encoding='utf-8')
