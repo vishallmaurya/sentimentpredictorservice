@@ -11,7 +11,7 @@ client = MongoClient(uri+"/"+dbname)
 db = client[dbname]
 collection = db["datas"]
 
-data = list(collection.find({}))
+data = list(collection.find({"used_in_training": False}))
 df = pd.DataFrame(data)
 df.drop(columns=['_id', 'user_id', '__v'], inplace=True)
-df.to_csv('../output.csv', index=False, encoding='utf-8')
+df.to_csv('../data/output.csv', index=False, encoding='utf-8')
