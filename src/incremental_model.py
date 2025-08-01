@@ -2,15 +2,12 @@
 
 import pandas as pd
 import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import SGDClassifier
 from sentence_transformers import SentenceTransformer
 import emoji
 import os
 import numpy as np
 from sklearn.metrics import accuracy_score
 from src.utils.text_preprocessing import cleaning_tweets
-from sklearn.linear_model import SGDClassifier
 from sklearn.utils.class_weight import compute_class_weight
 
 model_path = os.path.join(os.path.dirname(__file__), "../model.pkl")
@@ -57,8 +54,6 @@ y_new = data["predicted_class"].values
 
 class_weights = compute_class_weight("balanced", classes=np.unique(y_new), y=y_new)
 class_weight_dict = {i: class_weights[i] for i in range(len(class_weights))}
-
-class_weight_dict
 
 incremental_clf.class_weight = class_weight_dict
 incremental_clf.partial_fit(X_new, y_new, classes=np.array([0, 1, 2]))

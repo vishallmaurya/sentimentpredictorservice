@@ -2,22 +2,19 @@
 
 import numpy as np
 import pandas as pd
-from collections import Counter
 import pickle
 from sentence_transformers import SentenceTransformer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import SGDClassifier
 from imblearn.over_sampling import SMOTE
-from sklearn.linear_model import PassiveAggressiveClassifier
 import emoji
 import os
 from src.utils.text_preprocessing import cleaning_tweets
 
 data = pd.read_csv('/content/sentiment_data_2_label_annotated.csv')
 data1 = pd.read_csv('/content/sentiment_data_3csv_annotated.csv')
-data2 = pd.read_csv('/content/sentiment_data_label_annotated.csv')
-# data3 = pd.read_csv('/content/synthetic_sentiment_data.csv')
+data2 = pd.read_csv('/content/sentiment_data_label_annotated.csv') 
 
 data = pd.concat([data, data1, data2])
 
@@ -63,7 +60,7 @@ X_emoji = np.array(data["emoji_embeddings"].tolist())
 X_final = np.hstack((X_text, X_emoji))
 
 
-y = data["gpt_label"].values
+y = data["class"].values
 
 smote = SMOTE()
 X_SMOTE, Y_SMOTE = smote.fit_resample(X_final, y)
